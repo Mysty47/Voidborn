@@ -20,6 +20,12 @@ Voidborn is a MOBA game that offers players an immersive and strategic gaming ex
 - **Strategic Gameplay**: Coordinate with your team to outmaneuver and defeat opponents.
 - **Stunning Visuals**: Experience beautifully crafted environments and character designs powered by Unity's robust engine.
 
+- ## License
+
+This project is licensed under the [MIT License](LICENSE).  
+Feel free to use, modify, and distribute it under the terms of this license.
+
+
 ## Installation
 
 To set up the Voidborn project locally:
