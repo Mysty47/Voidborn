@@ -7,7 +7,6 @@
 - [Introduction](#introduction)
 - [Features](#features)
 - [Installation](#installation)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Introduction
