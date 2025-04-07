@@ -3,8 +3,8 @@ guid: 8381462665fa45bd8e3ac8014e7983c0
 timeCreated: 1704031913
 AssetOrigin:
   serializedVersion: 1
-  productId: 283690
-  packageName: Necromancer Army - Ghoul
+  productId: 310092
+  packageName: Humans army - Guard
   packageVersion: 1.0
-  assetPath: Assets/SimpleAssets/Common/Scripts/CharacterVFX.cs
-  uploadId: 664701
+  assetPath: Assets/Packages/Ghoul/Common/Scripts/CharacterVFX.cs
+  uploadId: 732011

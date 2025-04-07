@@ -13,7 +13,8 @@ public class Movement : MonoBehaviour
     public Animator animator;
     float motionSmoothTime = 0.1f;
 
-    [Header("Enemy")] public GameObject targetEnemy;
+    [Header("Enemy")]
+    public GameObject targetEnemy;
     public float stoppingDistance;
     private HighlightManager hmScript;
 

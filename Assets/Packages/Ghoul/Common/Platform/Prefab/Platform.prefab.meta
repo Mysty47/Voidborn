@@ -7,8 +7,8 @@ PrefabImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 283690
-  packageName: Necromancer Army - Ghoul
+  productId: 310092
+  packageName: Humans army - Guard
   packageVersion: 1.0
-  assetPath: Assets/SimpleAssets/Common/Platform/Prefab/Platform.prefab
-  uploadId: 664701
+  assetPath: Assets/Packages/Ghoul/Common/Platform/Prefab/Platform.prefab
+  uploadId: 732011
