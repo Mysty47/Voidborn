@@ -62,7 +62,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.44539556
+      - time: 0.24257867
         functionName: MeleeAttack
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 0969cc176c346414887bbdb19d90d565, type: 3}
