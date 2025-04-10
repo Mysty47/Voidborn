@@ -9,7 +9,8 @@ public class Abilities : MonoBehaviour
     public Text abilityText1;
     public KeyCode ability1Key;
     public float ability1Cooldown = 5;
-    
+
+    public float ability1ManaCost = 30;
     public Canvas ability1Canvas;
     public Image ability1Skillshot;
     
@@ -18,6 +19,7 @@ public class Abilities : MonoBehaviour
     public Text abilityText2;
     public KeyCode ability2Key;
     public float ability2Cooldown = 7;
+    public float ability2ManaCost = 70;
     
     [Header("Abilitiy 3")]
     public Image abilityImage3;
@@ -25,6 +27,7 @@ public class Abilities : MonoBehaviour
     public KeyCode ability3Key;
     public float ability3Cooldown = 10;
     
+    public float ability3ManaCost = 40;
     public Canvas ability3Canvas;
     public Image ability3Cone;
     
@@ -40,8 +43,12 @@ public class Abilities : MonoBehaviour
     private RaycastHit hit;
     private Ray ray;
     
+    public ManaSystem manaSystem;
+    
     void Start()
     {
+        manaSystem = GetComponent<ManaSystem>();
+        
         abilityImage1.fillAmount = 0;
         abilityImage2.fillAmount = 0;
         abilityImage3.fillAmount = 0;
@@ -66,9 +73,9 @@ public class Abilities : MonoBehaviour
         Ability2Input();
         Ability3Input();
         
-        AbilityCooldown(ref currentAbility1Cooldown, ability1Cooldown, ref isAbility1Cooldown, abilityImage1, abilityText1);
-        AbilityCooldown(ref currentAbility2Cooldown, ability2Cooldown, ref isAbility2Cooldown, abilityImage2, abilityText2);
-        AbilityCooldown(ref currentAbility3Cooldown, ability3Cooldown, ref isAbility3Cooldown, abilityImage3, abilityText3);
+        AbilityCooldown(ability1Cooldown, ability1ManaCost, ref currentAbility1Cooldown, ref isAbility1Cooldown, abilityImage1, abilityText1);
+        AbilityCooldown(ability2Cooldown, ability2ManaCost, ref currentAbility2Cooldown, ref isAbility2Cooldown, abilityImage2, abilityText2);
+        AbilityCooldown(ability3Cooldown, ability1ManaCost, ref currentAbility3Cooldown, ref isAbility3Cooldown, abilityImage3, abilityText3);
 
         Ability1Canvas();
         Ability3Canvas();
@@ -110,7 +117,7 @@ public class Abilities : MonoBehaviour
 
     private void Ability1Input()
     {
-        if (Input.GetKeyDown(ability1Key) && !isAbility1Cooldown)
+        if (Input.GetKeyDown(ability1Key) && !isAbility1Cooldown && manaSystem.CanAffordAbility(ability1ManaCost))
         {
             ability1Canvas.enabled = true;
             ability1Skillshot.enabled = true;
@@ -123,17 +130,21 @@ public class Abilities : MonoBehaviour
         
         if (ability1Skillshot.enabled && Input.GetMouseButtonDown(0))
         {
-            isAbility1Cooldown = true;
-            currentAbility1Cooldown = ability1Cooldown;
-                
-            ability1Canvas.enabled = false;
-            ability1Skillshot.enabled = false;
+            if (manaSystem.CanAffordAbility(ability1ManaCost))
+            {
+                manaSystem.UseAbility(ability1ManaCost);
+                isAbility1Cooldown = true;
+                currentAbility1Cooldown = ability1Cooldown;
+                                
+                ability1Canvas.enabled = false;
+                ability1Skillshot.enabled = false;
+            }
         }
     }
     
     private void Ability2Input()
     {
-        if (Input.GetKeyDown(ability2Key) && !isAbility2Cooldown)
+        if (Input.GetKeyDown(ability2Key) && !isAbility2Cooldown && manaSystem.CanAffordAbility(ability2ManaCost))
         {
             isAbility2Cooldown = true;
             currentAbility2Cooldown = ability2Cooldown;
@@ -141,7 +152,7 @@ public class Abilities : MonoBehaviour
     }
     private void Ability3Input()
     {
-        if (Input.GetKeyDown(ability3Key) && !isAbility3Cooldown)
+        if (Input.GetKeyDown(ability3Key) && !isAbility3Cooldown && manaSystem.CanAffordAbility(ability3ManaCost))
         {
             ability3Canvas.enabled = true;
             ability3Cone.enabled = true;
@@ -154,16 +165,20 @@ public class Abilities : MonoBehaviour
         
         if (ability3Cone.enabled && Input.GetMouseButtonDown(0))
         {
-            isAbility3Cooldown = true;
-            currentAbility3Cooldown = ability3Cooldown;
-                
-            ability3Canvas.enabled = false;
-            ability3Cone.enabled = false;
+            if (manaSystem.CanAffordAbility(ability3ManaCost))
+            {
+                manaSystem.UseAbility(ability3ManaCost);
+                isAbility3Cooldown = true;
+                currentAbility3Cooldown = ability3Cooldown;
+                                
+                ability3Canvas.enabled = false;
+                ability3Cone.enabled = false;
+            }
+            
         }
     }
 
-    private void AbilityCooldown(ref float currentCooldown, float maxCooldown, ref bool isCooldown, Image skillImage,
-        Text skillText)
+    private void AbilityCooldown(float abilityCooldown, float abilityManaCost, ref float currentCooldown, ref bool isCooldown, Image skillImage, Text skillText)
     {
         if (isCooldown)
         {
@@ -172,28 +187,46 @@ public class Abilities : MonoBehaviour
             if (currentCooldown <= 0f)
             {
                 isCooldown = false;
-                currentCooldown = 0f;
+                currentCooldown = 0;
+            }
 
+            if (skillImage != null)
+            {
+                skillImage.color = Color.grey;
+                skillImage.fillAmount = 1;
+            }
+
+            if (skillText != null)
+            {
+                skillText.text = Mathf.Ceil(currentCooldown).ToString();
+            }
+        }
+        else
+        {
+            if (manaSystem.CanAffordAbility(abilityManaCost))
+            {
                 if (skillImage != null)
                 {
-                    skillImage.fillAmount = 0f;
+                    skillImage.color = Color.grey;
+                    skillImage.fillAmount = 0;
                 }
 
                 if (skillText != null)
                 {
-                    skillText.text = "";
+                    skillText.text = " ";
                 }
             }
             else
             {
                 if (skillImage != null)
                 {
-                    skillImage.fillAmount = currentCooldown / maxCooldown;
+                    skillImage.color = Color.red;
+                    skillImage.fillAmount = 1;
                 }
 
                 if (skillText != null)
                 {
-                    skillText.text = Mathf.Ceil(currentCooldown).ToString();
+                    skillText.text = "X";
                 }
             }
         }
