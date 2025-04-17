@@ -42,10 +42,24 @@ public class Stats : MonoBehaviour
         
         targetStats.targetHealth -= damageAmount;
 
-        if (targetStats.targetHealth <= 0)
+        if (target.CompareTag("Player") && targetStats.targetHealth <= 0)
         {
             Destroy(target.gameObject);
             CheckIfPlayerDead();
+        }
+        else if (targetStats.damageCoroutine == null)
+        {
+            targetStats.StartLerpHealth();
+        }
+
+        if (target.CompareTag("Enemy") && targetStats.targetHealth <=0 )
+        {
+            EnemyDeathHandler enemyDeathHandler = target.GetComponent<EnemyDeathHandler>();
+
+            if (enemyDeathHandler != null)
+            {
+                enemyDeathHandler.Die();
+            }
         }
         else if (targetStats.damageCoroutine == null)
         {
