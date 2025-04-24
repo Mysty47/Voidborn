@@ -12,8 +12,7 @@ public class CameraScroll : MonoBehaviour
     {
         camFOV = cam.fieldOfView;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         mouseScrollInput = Input.GetAxis("Mouse ScrollWheel");
